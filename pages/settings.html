@@ -59,7 +59,7 @@
             throw new Error(err);
         }).then(data => {
             var tmp = "<option value='nul'>(不选择图片)</option>";
-            menuJson = data.toString();
+            
             var lists = data.toString().split("\n");
             for (var i = 0; i < lists.length; i++) {
 
