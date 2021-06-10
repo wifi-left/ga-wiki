@@ -1,0 +1,113 @@
+
+上一期：Minecraft 制作数据包教程（No.2）—— 创建数据包
+提示
+若您没有玩过1.12及其之前版本，那就太好了，不会误导你。
+
+
+基础指令教程
+1.blockdata / entitydata
+
+在新版本，已经被data全部代替辣！
+
+/data  <类型>
+
+/* 类型分为：
+
+block <方块坐标>
+
+entity <生物选择器>
+
+*/
+
+get ... [<路径>] [<倍率>]
+
+merge ... <nbt>
+
+modify ...  <append|insert <索引>|merge|prepend|set> from block <来源方块坐标> <来源路径>
+
+modify ...  <append|insert <索引>|merge|prepend|set> from entity <来源实体> <来源路径>
+
+modify ...  <append|insert <索引>|merge|prepend|set>  from storage <来源> <来源路径>
+
+modify ...  <append|insert <索引>|merge|prepend|set>  value <NBT>
+
+
+
+看不懂？看不懂很正常。
+
+进游戏试下。
+
+我要让一个箱子里的东西和另一个箱子同步，怎么弄呢？
+
+/data modify block ~ ~ ~ Items set from block ~ ~1 ~ Items
+
+这样就把当前位置的容器的东西变成了当前位置上方的容器（可以不相同）的东西。
+
+是不是很神奇呀 [doge]
+
+2.testfor / testforblock / testforblocks
+
+我前些天看到个视频说这俩没替换的。
+
+这怎么可能呢？
+
+execute 新增 if / unless
+
+if即成立后执行
+
+unless即不成立执行
+
+execute if entity <选择器> 就和testfor <选择器> 相同辣
+
+execute if block <...> 就和 testforblock <...> 一样辣。
+
+execute if blocks <...> 就和 testforblocks <...> 一样辣。(其实这个不存在辣）
+
+当然execute if 还支持score大小比较，非常人性
+
+3.execute
+
+只是重新改了下execute的结构
+
+像之前 execute <选择器> ~ ~ ~ 就变成了 execute as <选择器> at @s了
+
+execute <选择器> ~ ~ ~ detect <坐标> <方块> <数据值> <指令> 就变成了 execute if block <坐标> <方块>[方块状态(按下F3可以查看)(注意一定是中括号)] run <指令> 了。
+
+虽然变长了，但，execute功能变得特别多。
+
+详细命令：
+
+https://minecraft-zh.gamepedia.com/%E5%91%BD%E4%BB%A4/execute
+
+貌似其他指令就没怎么大改了。
+
+1.give
+
+NBT标签、损耗标签现在变在物品ID后的小括号里了。
+
+/give <选择器> <物品ID>{NBT标签,Damage:<损耗>s} <数量>
+
+值得一提的是，现在生物的CustomName、物品的display的Name和Lore支持JSON聊天器文本*了！
+
+例如：{display:{Name:"\"文本\""}}
+
+{display:{Name:"[{\"text\":\"文本\"}]"}}
+注意有引号，记得转义哦~
+
+关于如何转义：
+
+首先，把所有 \ 换成 \\
+
+接着，把所有 " 换成 \"
+
+这就是一层转义。
+
+
+感谢您的观看，希望您能点个赞或者加个关注，谢谢！
+
+下期也许会讲到JSON聊天器文本*如何书写。
+
+
+* JSON聊天器文本：
+
+即类似于[{"text":"文本"}]可以被MC解析且在聊天栏输出显示的文本。

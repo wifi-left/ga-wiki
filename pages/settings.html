@@ -1,0 +1,83 @@
+<h1>
+    Settings 设置
+</h1>
+<span>
+    设置均保存在浏览器 Cookies 中，您可以随时删除！
+</span>
+<br />
+<p>
+    背景图片：
+</p>
+<select id="selBgImg">
+
+</select>
+
+
+<p>
+    背景颜色（支持rgba）：
+</p>
+<style>
+    #inputcolor{
+        border:2px solid black;
+        height:40px;
+        font-size:22px;
+        width:calc(100% - 4em);
+    }
+</style>
+<input id="inputcolor" oninput="colorchange(this)" />
+
+
+
+
+
+<script>
+    function colorchange(ss){
+        $.cookie.remove("color");
+        var tochange = ss.value;
+        $.cookie.set("color", tochange,24*60*60*30);
+        co_color=tochange;
+        reloadBG();
+    }
+    document.getElementById("selBgImg").addEventListener("change",function () {
+        BGChange(document.getElementById("selBgImg"));
+    });
+    function BGChange(objS) {
+        $.cookie.remove("img");
+        var tochange = objS.options[objS.selectedIndex].value;
+        $.cookie.set("img", tochange,24*60*60*30);
+        co_img=tochange;
+        reloadBG();
+    }
+    var nbg = $.cookie.get("img");
+    try {
+        fetch('bgimg/imgs.menu').then(res => {
+            if (res.ok) {
+                return res.text();
+            }
+            throw new Error('Network response was not ok.');
+        }).catch(err => {
+            throw new Error(err);
+        }).then(data => {
+            var tmp = "<option value='nul'>(不选择图片)</option>";
+            menuJson = data.toString();
+            var lists = data.toString().split("\n");
+            for (var i = 0; i < lists.length; i++) {
+
+                var url = "";
+                var b = lists[i].split("~|~");
+                if (b.length >= 2) {
+                    if (nbg === b[1]) tmp = tmp + "<option value='" + b[1] + "' selected='selected'>" + b[0] + "</option>";
+                    else tmp = tmp + "<option value='" + b[1] + "'>" + b[0] + "</option>";
+                }
+            }
+            $("#selBgImg").html(tmp);
+        });
+
+    } catch (e) {
+        showError("Error: 出现错误！<br/>" + e);
+        console.log("Error:" + e);
+    }
+    if(co_color==undefined) document.getElementById("inputcolor").value="rgba(255,255,255,0.5)";
+    else document.getElementById("inputcolor").value=co_color;
+
+</script>

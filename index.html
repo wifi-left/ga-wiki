@@ -1,0 +1,107 @@
+<html>
+
+<head>
+    <title>Gamom Wiki - Welcome</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html,
+        body {
+            padding: none;
+            user-select: none;
+            overflow: hidden;
+            
+        }
+        *{
+            transition: 400ms;
+        }
+
+        .center-title {
+            /* color: white; */
+            font-family: "console";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%);
+        }
+
+        .top-center {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .alc {
+            text-align: center;
+        }
+
+        #error {
+            text-align: left;
+        }
+
+        #erbg {
+            width: 100%;
+            height: 35%;
+            max-height: 330px;
+            min-height: 150px;
+            background-color: rgba(255, 255, 255, 0.466);
+        }
+
+        #backg {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(120deg, rgb(214, 236, 235), rgb(183, 243, 210));
+        }
+
+        .iline {
+            display: inline-block;
+        }
+        .button-start{
+            outline: none;
+            border: none;
+            background: none;
+            height:40px;
+            width:120px;
+            cursor: pointer;
+            font-size:18px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .button-start:hover,.button-start:active{
+            outline: none;
+            border: none;
+            background: none;
+            height:40px;
+            width:100px;
+            cursor: pointer;
+            font-size:18px;
+            width:180px;
+            
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="backg">
+        <div class="top-center" id="erbg">
+
+        </div>
+        <div style="text-align:center;" class="center-title">
+            <h1>Welcome to GA wiki !</h1>
+            <button class="button-start" onclick="change();">
+                开始阅读
+            </button>
+        </div>
+    </div>
+    <script>
+        function change(){
+            location.href="./content";
+        }
+    </script>
+</body>
+
+</html>
