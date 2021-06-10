@@ -1,4 +1,6 @@
-English:
+## English:
+
+
 # GA Wiki
 Author: Gamom
 # Dependencies:
@@ -20,7 +22,11 @@ Format like this:
  - Tip: `File name` hasn't no file suffix!
 # Thanks for using it !
 
-简体中文:
+
+
+## 简体中文:
+
+
 # 依赖项：
 PHP 7
 # 支持
@@ -40,7 +46,11 @@ IIS等。
  - 提示：`File name` 没有文件后缀！
 # 感谢您使用它！
 
-正體中文：
+
+
+## 正體中文：
+
+
 # 依賴項：
 PHP 7
 # 支持
