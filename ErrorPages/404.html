@@ -76,7 +76,8 @@
         </div>
     </div>
     <script>
-        document.getElementById("backg").display="none";
+        //document.getElementById("backg").display="none";
+        var fini=0;
         var path = location.pathname;
         if (path.substr(0, "/content".length) === "/content") {
             fetch('http://' + location.host + "/system/gettext.php?pnm=" + path.substr("/content".length+1))
@@ -84,19 +85,22 @@
                     return response.json();
                 })
                 .then(function (myJson) {
+                    fini++;
                     if(myJson.stat!=false){
                         location.href='http://' + location.host + "/content/?pg="+path.substr("/content".length+1);
                     }
+                    if(fini>=2) document.getElementById("backg").display="inline-block";
                 });
             fetch('http://' + location.host + "/system/gettext.php?pnm=" + path.substr("/content".length+1)+"&html=yes")
                 .then(function (response) {
                     return response.json();
                 })
                 .then(function (myJson) {
+                    fini++;
                     if(myJson.stat!=false){
                         location.href='http://' + location.host + "/content/?pg="+path.substr("/content".length+1)+"&html=yes";
-                        document.getElementById("backg").display="inline-block";
                     }
+                    if(fini>=2) document.getElementById("backg").display="inline-block";
                 });
 
         }else

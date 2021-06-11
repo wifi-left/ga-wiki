@@ -5,20 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
     <title>Gamom Wiki - Welcome</title>
-    <link rel="stylesheet" href="../system/res/js/highlight/default.min.css">
-    <link rel="stylesheet" href="../system/res/css/markdown.css">
-
+    <link rel="stylesheet" id="darkcss" href="../system/res/css/markdown-all.css">
+    <link rel="stylesheet" href="../system/res/js/highlight/vs.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script src="../system/res/js/gquery.js"></script>
     <script src="../system/res/js/showdown.js"></script>
-    <script src="../system/res/js/highlight/highlight.js"></script>
+    <script src="../system/res/js/highlight/highlight.min.js"></script>
     <style>
-        code {
-            font-size: 18px;
-            font-family: 'consoles';
-        }
-
         html,
         body {
             padding: none;
@@ -60,12 +54,14 @@
             min-height: 150px;
             background-color: rgba(63, 218, 132, 0.8);
             z-index: 500;
+            word-wrap: break-word;
+            word-break: break-all;
         }
 
         input {
-            background: none;
+            
             outline: none;
-            border: none;
+            background:none;
             font-size: 18px;
         }
 
@@ -78,7 +74,8 @@
             background-color: azure;
             background-repeat: no-repeat;
             background-size: 100% 100%;
-
+            word-wrap: break-word;
+            word-break: break-all;
         }
 
         .iline {
@@ -118,6 +115,8 @@
             top: 60px;
             padding: 2em 2em 2em 2em;
             overflow: auto;
+            word-wrap: break-word;
+            word-break: break-all;
         }
 
         .closemsg {
@@ -231,7 +230,7 @@
         #searchInput {
             position: absolute;
             left: 60px;
-            height: 30px;
+            height: 34px;
             top: 20px;
             width: calc(100% - 120px);
             color: white;
@@ -247,6 +246,50 @@
 
         option {
             height: 30px;
+        }
+
+        #loadingPage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 400;
+            background-color: royalblue;
+            color: white;
+            width: 100%;
+            height: 100%;
+        }
+
+        #loadinglogo {
+            width: 48px;
+            border-radius: 50%;
+            height: 48px;
+            background-image: linear-gradient(120deg, rgb(154, 191, 196), rgb(233, 126, 236));
+            animation-name: circle;
+            animation-duration: 4s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes circle {
+            0% {
+                transform: translate(-600%, -600%);
+            }
+
+            25% {
+                transform: translate(600%, -600%);
+            }
+
+            50% {
+                transform: translate(600%, 600%);
+            }
+
+            75% {
+                transform: translate(-600%, 600%);
+            }
+
+            100% {
+                transform: translate(-600%, -600%);
+            }
+
         }
     </style>
 </head>
@@ -280,7 +323,17 @@
 
         </div>
     </div>
+    <div id="loadingPage">
+        <div class="center-title">
+            <h1>Loading...</h1>
+            <span id="load-tips">
+                正在为您努力加载中...
+            </span>
+        </div>
+        <div id="loadinglogo" class="center-title">
 
+        </div>
+    </div>
 </body>
 <script>
     var menuJson = "";
@@ -340,6 +393,7 @@
             showError("Error: 出现错误！<br/>" + e);
             console.log("Error:" + e);
         }
+
     }
     $("#menu").hide();
     flushmenu();
@@ -348,13 +402,33 @@
         $("#menu").fadeToggle(300);
         hidemsg(document.getElementById("cw3jkwej"));
     }
-    var co_img=$.cookie.get("img");
-    var co_color=$.cookie.get("color");
+    var co_img = $.cookie.get("img");
+    var co_color = $.cookie.get("color");
+    var isdark = $.cookie.get("dark");
+
+    function showloading() {
+        $("#loadingPage").fadeIn(50);
+        $("#loadinglogo").css("animation-iteration-count", "infinite");
+    }
+
+    function hideloading() {
+        $("#loadingPage").fadeOut(300);
+        setTimeout(() => {
+            $("#loadinglogo").css("animation-iteration-count", "0");
+
+        }, 300)
+
+
+    }
+    if (isdark == undefined) isdark = "default";
+
     function reloadBG() {
-        if(co_img==undefined) co_img="";
-        co_img=co_img.toString().replaceAll("\n","");
+        if (co_img == undefined) co_img = "";
+        co_img = co_img.toString().replaceAll("\n", "");
+        document.getElementById("darkcss").href = "../system/res/css/markdown-" + (isdark) + ".css";
         document.getElementById("backg").style.backgroundImage = "url('./bgimg/" + co_img + "')";
         document.getElementById("textarea").style.backgroundColor = "" + co_color + "";
+
     }
     reloadBG();
     hljs.initHighlightingOnLoad();
@@ -374,7 +448,7 @@
                 html = converter.makeHtml(data["content"]);
                 showCo(html);
 
-                hljs.highlightAll()
+                reloadCodes();
             }
 
         });
@@ -384,6 +458,14 @@
         showCo("<h1>无法显示该页。</h1><span>请联系管理员！</span>")
     }
 
+    function reloadCodes() {
+        hljs.highlightAll();
+        var viswe = document.getElementsByTagName("code");
+        for (var i = 0; i < viswe.length; i++) {
+            if (viswe[i].className == "")
+                viswe[i].innerHTML = "<span class='line-code'>" + viswe[i].innerHTML + "</span>";
+        }
+    }
 
     function hidemsg(a) {
         a.style.display = "none";
@@ -422,7 +504,7 @@
                 }
             }
         }
-        
+
     }
     try {
         // document.addEventListener('gesturestart', function(event) {
@@ -431,6 +513,7 @@
     } catch (e) {
         console.log("error:" + e);
     }
+    hideloading();
 </script>
 <script>
 

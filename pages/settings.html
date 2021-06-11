@@ -5,6 +5,8 @@
     设置均保存在浏览器 Cookies 中，您可以随时删除！
 </span>
 <br />
+<h1>基础设置</h1>
+<h2>个性化</h2>
 <p>
     背景图片：
 </p>
@@ -12,25 +14,43 @@
 
 </select>
 
+<p>
+    主题配色：
+</p>
+<select id="isdark">
 
+</select>
 <p>
     背景颜色（支持rgba）：
 </p>
 <style>
-    #inputcolor{
-        border:2px solid black;
-        height:40px;
-        font-size:22px;
-        width:calc(100% - 4em);
-    }
+    
 </style>
-<input id="inputcolor" oninput="colorchange(this)" />
+<input class="input" id="inputcolor" oninput="colorchange(this)" />
 
 
 
 
 
 <script>
+    document.getElementById("isdark").addEventListener("change",function () {
+        csschange(document.getElementById("isdark"));
+    });
+    function BGChange(objS) {
+        $.cookie.remove("img");
+        var tochange = objS.options[objS.selectedIndex].value;
+        $.cookie.set("img", tochange,24*60*60*30);
+        co_img=tochange;
+        reloadBG();
+    }
+    function csschange(objS){
+        $.cookie.remove("dark");
+        var tochange =objS.options[objS.selectedIndex].value;
+        tochange=tochange.toString().replaceAll("\n","");
+        $.cookie.set("dark", tochange,24*60*60*30);
+        isdark=tochange;
+        reloadBG();
+    }
     function colorchange(ss){
         $.cookie.remove("color");
         var tochange = ss.value;
@@ -50,6 +70,7 @@
     }
     var nbg = $.cookie.get("img");
     try {
+        //Background Images
         fetch('bgimg/imgs.menu').then(res => {
             if (res.ok) {
                 return res.text();
@@ -72,7 +93,33 @@
             }
             $("#selBgImg").html(tmp);
         });
+        //CSS Looking
+        fetch('looking.menu').then(res => {
+            if (res.ok) {
+                return res.text();
+            }
+            throw new Error('Network response was not ok.');
+        }).catch(err => {
+            throw new Error(err);
+        }).then(data => {
+            var tmp = "";
+            
+            var lists = data.toString().split("\r\n");
+            for (var i = 0; i < lists.length; i++) {
 
+                var url = "";
+                var b = lists[i].split("~|~");
+                if (b.length >= 2) {
+                    //console.log(isdark,b[1],isdark== b[1]);
+                    if (isdark== b[1]) tmp = tmp + "<option value='" + b[1] + "' selected='selected'>" + b[0] + "</option>";
+                    else tmp = tmp + "<option value='" + b[1] + "'>" + b[0] + "</option>";
+                }
+            }
+            if(tmp==""){
+                showError("Error: 出现错误！<br/>无法获取列表！");
+            }
+            $("#isdark").html(tmp);
+        });
     } catch (e) {
         showError("Error: 出现错误！<br/>" + e);
         console.log("Error:" + e);

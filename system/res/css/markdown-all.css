@@ -1,0 +1,18 @@
+.input{
+    border-bottom:3px solid red;
+    color:blue;
+    background-color: aliceblue;
+    font-size:18px;
+    font-family:"consolas";
+    height:40px;
+    font-size:22px;
+    width:calc(100% - 4em);
+}
+.line-code {
+    border: 2px solid rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    background-color: rgb(27, 27, 27);
+    padding: 4px 4px 4px 4px;
+    font-family: 'Consolas';
+    line-height:34px;
+}

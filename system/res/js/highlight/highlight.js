@@ -2300,7 +2300,6 @@ var hljs = (function () {
       function initHighlightingOnLoad() {
         highlightAll();
         deprecated("10.6.0", "initHighlightingOnLoad() deprecated.  Use highlightAll() now.");
-        
       }
 
       let wantsHighlight = false;

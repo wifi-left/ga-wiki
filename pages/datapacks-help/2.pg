@@ -26,13 +26,15 @@
 打开后，在目录内新建文件，pack.mcmeta：
 
 （示例：）
-
+```JSON
 {
     "pack": {
         "pack_format": 6,
         "description": "The default data for Minecraft"
     }
 }
+```
+```JSON
 {
 
     "pack":{
@@ -49,7 +51,7 @@
 
 //请注意这些用“//”注释的文本请去掉。
 
-
+```
 
 新建目录data
 
