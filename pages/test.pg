@@ -1,30 +1,83 @@
-# wm.js
-Implement the window in the browser!
-
-Example code
-```html
-<html>
-  <script src="wm.js"></script>
-  <link rel="stylesheet" href="wm.css">
-  <body>
-    <style>
-      body{
-        background: #414141;
-      }
-    </style>
-    <script>
-     var win=new wm.window(),a=0
-     function foo(){
-      let win=new wm.window("Wm.js is pretty good".split(" ")[a++]);
-      win.setContentNode(wm.toolFuncs.createEle(`<pre style="margin:15px;color:white;">Wm.js is pretty good!</pre>`))
-     }
-     win.setContentNode(wm.toolFuncs.createEle("<div onclick='foo()' style='border-radius:10px;user-select:none;color:white;box-shadow:0px 0px 10px black;padding:10px;margin:10px;background:#343434'>点我增加窗口</div>"))
-
-    </script>
-   
-  </body>
-</html>
 ```
-[Result](https://www.bilibili.com/video/BV1M54y1r72o/)
+#include<iostream>
+#include<cstring>
 
-`woish2qhid3jhfvew4vhgfvserhgfvtyg3qawvtrgv23t4frvt2gqvfghhv34qwgv`
+using namespace std;
+int n,m,cnt,maxDist;
+int dist[26][26];
+
+inline void floyd()
+{
+    for(int k=0;k<n;k++)
+        for(int i=0;i<n;i++)
+            for(int j=0;j<n;j++)
+                if(dist[i][k]&&dist[k][j])
+                {
+                    dist[i][j]=max(dist[i][j],dist[i][k]+dist[k][j]);
+                    maxDist=max(maxDist,dist[i][j]);
+                }
+}
+
+int main()
+{
+    while(cin>>n>>m,n&&m)
+    {
+        memset(dist,0,sizeof dist);
+        bool flag=0;
+        maxDist=0;
+        for(int i=1;i<=m;i++)
+        {
+            char a,b;
+            scanf(" %c<%c",&a,&b);
+            //头最小
+            // int from=a-'A';
+            // int to=b-'A';
+            //头最大
+            int from=b-'A';
+            int to=a-'A';
+            if(dist[to][from])
+            {
+                printf("Inconsistency found after %d relations.",i);
+                for(int j=i+1;j<=m;j++)
+                    scanf(" %c<%c",&a,&b);
+                flag=1;
+                break;
+            }
+            dist[from][to]=1;
+            floyd();
+            int head=-1;
+            for(int i=0;i<n;i++)
+            {
+                bool f=1;
+                for(int j=0;j<n&&f;j++)
+                    if(dist[j][i])
+                        f=0;
+                if(f)
+                    head= head==-1 ? i : 999;
+            }
+            if(head!=-1&&head!=999&&maxDist==n-1)
+            {
+                for(int j=i+1;j<=m;j++)
+                    scanf(" %c<%c",&a,&b);
+                printf("Sorted sequence determined after %d relations: ",i);
+                // putchar(head+'A');   //头最小
+                for(int j=n-1;j;j--)    //头最大
+                // for(int j=1;j<n;j++) //头最小
+                    for(int k=0;k<n;k++)
+                        if(dist[head][k]==j)
+                            putchar(k+'A');
+                putchar(head+'A');  //头最大
+                putchar('.');
+                flag=1;
+                break;
+            }
+        }
+        if(!flag)
+            puts("Sorted sequence cannot be determined.");
+        else puts("");
+    }
+}
+```
+# 悬赏：我的解法加代码，求解图片最后的疑惑。
+## 更新：AC代码中A<B的边表示为B->A而不是A->B
+

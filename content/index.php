@@ -59,9 +59,9 @@
         }
 
         input {
-            
+
             outline: none;
-            background:none;
+            background: none;
             font-size: 18px;
         }
 
@@ -106,13 +106,22 @@
 
             transform: scale(1.1);
         }
-
-        #textarea {
-            width: calc(100% - 4em);
-            height: calc(100% - 60px - 4em);
+        #bigcontent{
+            width: calc(100%);
+            height: calc(100% - 60px);
             position: absolute;
             left: 0;
             top: 60px;
+            overflow: auto;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        #textarea {
+            width: calc(100% - 4em);
+            height: calc(100% - 0px - 4em);
+            position: absolute;
+            left: 0;
+            top: 0px;
             padding: 2em 2em 2em 2em;
             overflow: auto;
             word-wrap: break-word;
@@ -250,7 +259,7 @@
 
         #loadingPage {
             position: absolute;
-            top: 0;
+            top: 20px;
             left: 0;
             z-index: 400;
             background-color: royalblue;
@@ -296,7 +305,7 @@
 
 <body id="body">
 
-    <div id="menu">
+    <div id="menu" style="overflow-y:auto;">
         <input id="searchInput" type="text" oninput="search(this.value)" placeholder="键入文本以搜索 GA Wiki" />
         <ul id="ulfa">
             <li>
@@ -306,6 +315,7 @@
     </div>
     <div id="backg">
         <div class="top-center" id="erbg" style="display:none;">
+            
             <div class="center-title">
                 <h1 id="error-msg">1</h1>
             </div>
@@ -319,21 +329,25 @@
             </button>
             <h1 id="title2">GA Wiki</h1>
         </div>
-        <div id="textarea">
+        <div id="bigcontent">
+        <div id="loadingPage">
+                <div class="center-title">
+                    <h1>Loading...</h1>
+                    <span id="load-tips">
+                        正在为您努力加载中...
+                    </span>
+                </div>
+                <div id="loadinglogo" class="center-title">
+
+                </div>
+            </div>
+            <div id="textarea">
 
         </div>
-    </div>
-    <div id="loadingPage">
-        <div class="center-title">
-            <h1>Loading...</h1>
-            <span id="load-tips">
-                正在为您努力加载中...
-            </span>
         </div>
-        <div id="loadinglogo" class="center-title">
+        
+    </div>
 
-        </div>
-    </div>
 </body>
 <script>
     var menuJson = "";
@@ -367,9 +381,9 @@
                 if (res.ok) {
                     return res.text();
                 }
-                throw new Error('Network response was not ok.');
+                showError("Error: 出现错误！<br/>" + 'Network response was not ok.');
             }).catch(err => {
-                throw new Error(err);
+                showError("Error: 出现错误！<br/>" + err);
             }).then(data => {
                 var tmp = "";
                 menuJson = data.toString();
